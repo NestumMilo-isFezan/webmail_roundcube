@@ -1,49 +1,8 @@
-version: '3.8'
-
+version: '3'
 services:
-  # RoundCube Webmail
   roundcube:
-    image: roundcube/roundcubemail:latest-apache
-    container_name: uniseek_roundcube
+    image: instrumentisto/roundcube:apache
     ports:
-      - "80"
-    environment:
-      ROUNDCUBEMAIL_DB_TYPE: mysql
-      ROUNDCUBEMAIL_DB_HOST: roundcube_db
-      ROUNDCUBEMAIL_DB_NAME: roundcube
-      ROUNDCUBEMAIL_DB_USER: roundcube
-      ROUNDCUBEMAIL_DB_PASSWORD: roundcube_password
-      ROUNDCUBEMAIL_DB_PORT: 3306
-      ROUNDCUBEMAIL_DEFAULT_HOST: ssl://mail.uniseekai.com
-      ROUNDCUBEMAIL_DEFAULT_PORT: 993
-      ROUNDCUBEMAIL_SMTP_SERVER: ssl://mail.uniseekai.com
-      ROUNDCUBEMAIL_SMTP_PORT: 465
+      - "80:80"
     volumes:
-      - ./roundcube/config.inc.php:/var/www/html/config/config.inc.php:ro
-      - ./roundcube/laravel_autologin.php:/var/www/html/plugins/laravel_autologin/laravel_autologin.php:ro
-    depends_on:
-      - roundcube_db
-    restart: unless-stopped
-
-  # RoundCube Database
-  roundcube_db:
-    image: mysql:8.0
-    container_name: uniseek_roundcube_db
-    ports:
-      - '3306:3306'
-    environment:
-      MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: roundcube
-      MYSQL_USER: roundcube
-      MYSQL_PASSWORD: roundcube_password
-    volumes:
-      - roundcube_db_data:/var/lib/mysql
-    restart: unless-stopped
-
-volumes:
-  roundcube_db_data:
-    driver: local
-
-networks:
-  default:
-    name: uniseek_roundcube_network
+      - ./roundcube.config.php:/app/config/config.inc.php:ro

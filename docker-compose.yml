@@ -3,6 +3,6 @@ services:
   roundcube:
     image: instrumentisto/roundcube:apache
     ports:
-      - "80:80"
+      - "80"
     volumes:
       - ./roundcube.config.php:/app/config/config.inc.php:ro
